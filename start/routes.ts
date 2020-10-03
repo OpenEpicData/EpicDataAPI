@@ -34,4 +34,4 @@ Route.get('test', async () => {
   return Database.query().select('*').from('users')
 })
 
-Route.get('spider/news', 'Spider/NewsController.index')
+Route.resource('spider/news', 'Spider/NewsController')
