@@ -7,6 +7,7 @@ import { URL } from "url";
 import Tag from "App/Models/Tag";
 import { logger } from "@adonisjs/ace";
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Route from '@ioc:Adonis/Core/Route'
 
 const vgtime_url = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
@@ -28,8 +29,12 @@ export default class NewsController {
     }
   }
 
-  public async create() {
+  public async create({ response }) {
     await this.fetch()
+
+    return response.redirect(
+      Route.makeUrl('Spider/NewsController.index')
+    )
   }
 
   private async fetch() {
@@ -48,8 +53,8 @@ export default class NewsController {
           hyperlink: `https://www.vgtime.com${$(this).find('a').attr('href')}`
         }
 
-      const news =
-        await News.updateOrCreate(data, { title: data.title }),
+      const
+        news = await News.updateOrCreate(data, { title: data.title }),
         news_id = news.id,
         pullWordData = await self.pullWord(`${data.title},${data.description}`)
 
@@ -91,7 +96,7 @@ export default class NewsController {
     });
   }
 
-  private async insertNewsTags(element: { t: string; p: number; }, news_id: number, tag_id: number) {
+  private async insertNewsTags(element: { t: string; p: string; }, news_id: number, tag_id: number) {
     const
       title = element.t,
       similarity = element.p,

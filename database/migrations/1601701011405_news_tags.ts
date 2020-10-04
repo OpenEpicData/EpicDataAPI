@@ -8,7 +8,7 @@ export default class NewsTags extends BaseSchema {
       table.increments('id')
       table.integer('news_id')
       table.integer('tag_id')
-      table.integer('similarity')
+      table.string('similarity')
       table.string('title')
       table.timestamps(true)
     })

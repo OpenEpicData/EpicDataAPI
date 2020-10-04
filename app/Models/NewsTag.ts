@@ -15,7 +15,7 @@ export default class NewsTag extends BaseModel {
   public title: string
 
   @column()
-  public similarity: number
+  public similarity: string
 
   @column.dateTime({ autoCreate: true, serializeAs: null })
   public createdAt: DateTime
