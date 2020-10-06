@@ -1,35 +1,35 @@
-import got from "got";
-import cheerio from "cheerio";
-import sleep from "sleep";
-import News from "App/Models/News";
-import NewsTag from "App/Models/NewsTag";
-import { URL } from "url";
-import Tag from "App/Models/Tag";
-import { logger } from "@adonisjs/ace";
+import got from 'got'
+import cheerio from 'cheerio'
+import sleep from 'sleep'
+import News from 'App/Models/News'
+import NewsTag from 'App/Models/NewsTag'
+import { URL } from 'url'
+import Tag from 'App/Models/Tag'
+import { logger } from '@adonisjs/ace'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Route from '@ioc:Adonis/Core/Route'
 
-const vgtime_url = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
+const vgtimeURL = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
 export default class NewsController {
-  public async index(ctx: HttpContextContract) {
+  public async index (ctx: HttpContextContract) {
     const
-      request = ctx.request.get(),
-      news_tags = await NewsTag.query().orderBy('id', 'desc'),
-      news = await News.query()
-        .preload('newsTags', (query) => {
-          query.orderBy('similarity', 'desc')
-        })
-        .orderBy('id', 'desc')
-        .paginate(request.page, request.limit)
+      request = ctx.request.get()
+    const newsTags = await NewsTag.query().orderBy('id', 'desc')
+    const news = await News.query()
+      .preload('newsTags', (query) => {
+        query.orderBy('similarity', 'desc')
+      })
+      .orderBy('id', 'desc')
+      .paginate(request.page, request.limit)
 
     return {
       news: news,
-      news_tags: news_tags
+      newsTags: newsTags,
     }
   }
 
-  public async create({ response }) {
+  public async create ({ response }) {
     await this.fetch()
 
     return response.redirect(
@@ -37,78 +37,78 @@ export default class NewsController {
     )
   }
 
-  private async fetch() {
-    const $vgtime = await this.fetchNews(vgtime_url)
+  private async fetch () {
+    const $vgtime = await this.fetchNews(vgtimeURL)
     await this.vgtime($vgtime)
   }
 
-  private async vgtime($: any) {
+  private async vgtime ($dom: any) {
     const self = this
-    $('.news').each(async function () {
+    $dom('.news').each(async function () {
       const
         data = {
-          title: $(this).find('h2').text(),
-          description: $(this).find('p').text(),
-          author: $(this).find('.user_name').text(),
-          hyperlink: `https://www.vgtime.com${$(this).find('a').attr('href')}`
+          title: $dom(this).find('h2').text(),
+          description: $dom(this).find('p').text(),
+          author: $dom(this).find('.user_name').text(),
+          hyperlink: `https://www.vgtime.com${$dom(this).find('a').attr('href')}`,
         }
 
       const
-        news = await News.updateOrCreate(data, { title: data.title }),
-        news_id = news.id,
-        pullWordData = await self.pullWord(`${data.title},${data.description}`)
+        news = await News.updateOrCreate(data, { title: data.title })
+      const newsID = news.id
+      const pullWordData = await self.pullWord(`${data.title},${data.description}`)
 
       logger.info(`news: ${data.title},${data.description}`)
-      await self.insertTags(pullWordData, news_id)
+      await self.insertTags(pullWordData, newsID)
 
       sleep.sleep(1)
     })
   }
 
-  private async fetchNews(url: string | URL) {
+  private async fetchNews (url: string | URL) {
     const
-      response = await got(url),
-      body = JSON.parse(response.body).data
+      response = await got(url)
+    const body = JSON.parse(response.body).data
 
     return cheerio.load(body)
   }
 
-  private async pullWord(text: string) {
+  private async pullWord (text: string) {
     const
-      url = `http://api.pullword.com/get.php?source=${text}&param1=0.6&param2=1&json=1`,
-      response = await got(url),
-      body = JSON.parse(response.body)
+      url = `http://api.pullword.com/get.php?source=${text}&param1=0.6&param2=1&json=1`
+    const response = await got(url)
+    const body = JSON.parse(response.body)
 
     return body
   }
 
-  private async insertTags(data: any[], news_id: number) {
+  private async insertTags (data: any[], newsID: number) {
     data.forEach(async element => {
       const
-        title = element.t,
-        tag = await Tag.updateOrCreate({
-          title: title
-        }, { title: title })
+        title = element.t
+      const tag = await Tag.updateOrCreate({
+        title: title,
+      }, { title: title })
 
-      const tag_id = tag.id
+      const tagID = tag.id
 
-      await this.insertNewsTags(element, news_id, tag_id)
-    });
+      await this.insertNewsTags(element, newsID, tagID)
+    })
   }
 
-  private async insertNewsTags(element: { t: string; p: string; }, news_id: number, tag_id: number) {
+  private async insertNewsTags (element: { t: string; p: string; }, newsID: number, tagID: number) {
     const
-      title = element.t,
-      similarity = element.p,
-      data = {
-        news_id: news_id,
-        tag_id: tag_id,
-        title: title,
-        similarity: similarity
-      }
+      title = element.t
+    const similarity = element.p
+    const data = {
+      newsID: newsID,
+      tagID: tagID,
+      title: title,
+      similarity: similarity,
+    }
 
     await NewsTag.updateOrCreate(data, data)
 
-    logger.info(`insert news_id: ${news_id}, tag_id: ${tag_id}, pull_title: ${title}, similarity: ${similarity}`)
+    logger.info(`insert newsID: ${newsID}, tagID: ${tagID}, pull_title: ${title}, similarity: ${similarity}`)
   }
 }

@@ -25,7 +25,7 @@ export default class News extends BaseModel {
   public updatedAt: DateTime
 
   @hasMany(() => NewsTag, {
-    foreignKey: 'news_id'
+    foreignKey: 'news_id',
   })
   public newsTags: HasMany<typeof NewsTag>
 }
