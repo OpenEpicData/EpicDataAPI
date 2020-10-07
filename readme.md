@@ -10,4 +10,4 @@ run `node ace serve --watch`
 
 ## Deploy
 
-bash deploy.sh
+sh deploy.sh
