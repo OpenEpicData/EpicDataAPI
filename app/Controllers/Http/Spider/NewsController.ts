@@ -6,25 +6,12 @@ import NewsTag from 'App/Models/NewsTag'
 import { URL } from 'url'
 import Tag from 'App/Models/Tag'
 import { logger } from '@adonisjs/ace'
-import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Route from '@ioc:Adonis/Core/Route'
 
 const vgtimeURL = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
 export default class NewsController {
-  public async index(ctx: HttpContextContract) {
-    const
-      request = ctx.request.get()
-    const news = await News.query()
-      .preload('newsTags', (query) => {
-        query.orderBy('similarity', 'desc')
-      })
-      .orderBy('id', 'desc')
-      .paginate(request.page, request.limit)
-
-    return {
-      news
-    }
+  public async index() {
   }
 
   public async create({ response }) {
@@ -73,7 +60,7 @@ export default class NewsController {
 
   private async pullWord(text: string) {
     const
-      url = `http://api.pullword.com/get.php?source=${text}&param1=0.6&param2=1&json=1`
+      url = `http://api.pullword.com/get.php?source=${text}&param1=0&param2=1&json=1`
     const response = await got(url)
     const body = JSON.parse(response.body)
 
