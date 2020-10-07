@@ -5,7 +5,7 @@ export default class NewsController {
   public async index(ctx: HttpContextContract) {
     const request = ctx.request.get()
     const reQuery = {
-      tagTitle: request.tagTitle ?? null
+      tagTitle: request.tagTitle
     }
 
     const news = await News.query()
