@@ -4,5 +4,8 @@ sudo yarn
 sudo yarn build --production
 
 cd ./build
+
 sudo yarn install --production
-sudo pm2 restart server.js
+
+sudo pm2 stop server.js
+sudo pm2 start server.js
