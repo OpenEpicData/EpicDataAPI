@@ -1,5 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, scope } from '@ioc:Adonis/Lucid/Orm'
+import { uniqBy } from "lodash";
+
+interface INewsTagQuery {
+  tagTitle: string[]
+}
 
 export default class NewsTag extends BaseModel {
   @column({ isPrimary: true, serializeAs: null })
@@ -22,4 +27,11 @@ export default class NewsTag extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true, serializeAs: null })
   public updatedAt: DateTime
+
+  public static tagTitle = scope((query, queryParams: INewsTagQuery) => {
+    if (queryParams.tagTitle)
+      query.whereIn('title', (<string><unknown>queryParams.tagTitle).split(','))
+
+    query.orderBy('similarity', 'desc')
+  })
 }

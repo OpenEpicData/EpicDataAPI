@@ -463,6 +463,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash@^4.14.161":
+  version "4.14.161"
+  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.161.tgz#a21ca0777dabc6e4f44f3d07f37b765f54188b18"
+  integrity sha1-ohygd32rxuT0Tz0H83t2X1QYixg=
+
 "@types/luxon@^1.24.4":
   version "1.25.0"
   resolved "https://registry.npm.taobao.org/@types/luxon/download/@types/luxon-1.25.0.tgz#3d6fe591fac874f48dd225cb5660b2b785a21a05"

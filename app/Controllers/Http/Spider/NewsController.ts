@@ -12,10 +12,9 @@ import Route from '@ioc:Adonis/Core/Route'
 const vgtimeURL = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
 export default class NewsController {
-  public async index (ctx: HttpContextContract) {
+  public async index(ctx: HttpContextContract) {
     const
       request = ctx.request.get()
-    const newsTags = await NewsTag.query().orderBy('id', 'desc')
     const news = await News.query()
       .preload('newsTags', (query) => {
         query.orderBy('similarity', 'desc')
@@ -24,25 +23,24 @@ export default class NewsController {
       .paginate(request.page, request.limit)
 
     return {
-      news: news,
-      newsTags: newsTags,
+      news
     }
   }
 
-  public async create ({ response }) {
+  public async create({ response }) {
     await this.fetch()
 
     return response.redirect(
-      Route.makeUrl('Spider/NewsController.index')
+      Route.makeUrl('NewsController.index')
     )
   }
 
-  private async fetch () {
+  private async fetch() {
     const $vgtime = await this.fetchNews(vgtimeURL)
     await this.vgtime($vgtime)
   }
 
-  private async vgtime ($dom: any) {
+  private async vgtime($dom: any) {
     const self = this
     $dom('.news').each(async function () {
       const
@@ -65,7 +63,7 @@ export default class NewsController {
     })
   }
 
-  private async fetchNews (url: string | URL) {
+  private async fetchNews(url: string | URL) {
     const
       response = await got(url)
     const body = JSON.parse(response.body).data
@@ -73,7 +71,7 @@ export default class NewsController {
     return cheerio.load(body)
   }
 
-  private async pullWord (text: string) {
+  private async pullWord(text: string) {
     const
       url = `http://api.pullword.com/get.php?source=${text}&param1=0.6&param2=1&json=1`
     const response = await got(url)
@@ -82,7 +80,7 @@ export default class NewsController {
     return body
   }
 
-  private async insertTags (data: any[], newsID: number) {
+  private async insertTags(data: any[], newsID: number) {
     data.forEach(async element => {
       const
         title = element.t
@@ -96,13 +94,13 @@ export default class NewsController {
     })
   }
 
-  private async insertNewsTags (element: { t: string; p: string; }, newsID: number, tagID: number) {
+  private async insertNewsTags(element: { t: string; p: string; }, newsID: number, tagID: number) {
     const
       title = element.t
     const similarity = element.p
     const data = {
-      newsID: newsID,
-      tagID: tagID,
+      news_id: newsID,
+      tag_id: tagID,
       title: title,
       similarity: similarity,
     }

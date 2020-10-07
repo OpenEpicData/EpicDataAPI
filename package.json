@@ -9,9 +9,11 @@
   },
   "devDependencies": {
     "@adonisjs/assembler": "^2.0.0",
+    "@types/lodash": "^4.14.161",
     "adonis-preset-ts": "^1.0.4",
     "eslint": "^7.10.0",
     "eslint-plugin-adonis": "^1.0.15",
+    "lodash": "^4.17.20",
     "pino-pretty": "^4.2.1",
     "typescript": "^4.0.3",
     "youch": "^2.1.0",
