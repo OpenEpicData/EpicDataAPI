@@ -21,7 +21,7 @@ const databaseConfig: DatabaseConfig & { orm: Partial<OrmConfig> } = {
   | file.
   |
   */
-  connection: Env.get('DB_CONNECTION', 'sqlite') as string,
+  connection: Env.get('DB_CONNECTION', 'pg') as string,
 
   connections: {
     /*
