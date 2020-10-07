@@ -1,4 +1,5 @@
 # CD Q & A: https://stackoverflow.com/questions/29045140/env-bash-r-no-such-file-or-directory/53943650
+yarn
 
 cd ../
 yarn build --production
