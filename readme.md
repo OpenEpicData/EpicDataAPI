@@ -7,3 +7,7 @@ Build with adonisjs
 Set .env
 
 run `node ace serve --watch`
+
+## Deploy
+
+bash deploy.sh
