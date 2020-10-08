@@ -12,9 +12,7 @@ export default class NewsController {
       .whereHas('newsTags', (query) => {
         query.apply((scopes) => scopes.tagTitle(reQuery))
       })
-      .preload('newsTags', (query) => {
-        query.apply((scopes) => scopes.tagTitle(reQuery))
-      })
+      .preload('newsTags')
       .orderBy('id', 'desc')
       .paginate(request.page, request.limit)
 

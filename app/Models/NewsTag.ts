@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, scope } from '@ioc:Adonis/Lucid/Orm'
-import { uniqBy } from "lodash";
 
 interface INewsTagQuery {
   tagTitle: string[]
