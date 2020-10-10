@@ -42,7 +42,7 @@ class Fecth {
           hyperlink: `https://www.vgtime.com${self._cheerioBody(this).find('a').attr('href')}`,
         }
 
-      const news = await News.updateOrCreate(data, { title: data.title })
+      const news = await News.updateOrCreate(data, { hyperlink: data.hyperlink })
       const newsID = news.id
 
       const pullWordData = await self.pullWord(`${data.title},${data.description}`)
