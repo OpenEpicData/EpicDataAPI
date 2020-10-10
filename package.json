@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@adonisjs/assembler": "^2.0.0",
+    "@types/cheerio": "^0.22.22",
     "@types/lodash": "^4.14.161",
     "adonis-preset-ts": "^1.0.4",
     "eslint": "^7.10.0",

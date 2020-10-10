@@ -36,3 +36,4 @@ Route.get('test', async () => {
 
 Route.resource('spider/news', 'Spider/NewsController')
 Route.resource('news', 'NewsController')
+Route.resource('games', 'GamesController')

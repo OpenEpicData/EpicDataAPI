@@ -1,22 +1,30 @@
-import got from 'got'
+/**
+ * WIP
+ */
+
+
+
+import { BaseCommand, logger } from '@adonisjs/ace'
+import { URL } from 'url'
 import cheerio from 'cheerio'
 import sleep from 'sleep'
 import News from 'App/Models/News'
-import NewsTag from 'App/Models/NewsTag'
-import { URL } from 'url'
+import got from 'got/dist/source'
 import Tag from 'App/Models/Tag'
-import { logger } from '@adonisjs/ace'
+import NewsTag from 'App/Models/NewsTag'
 
 const vgtimeURL = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
-export default class NewsController {
-  public async index() {
+export default class SpiderNews extends BaseCommand {
+  public static commandName = 'spider:news'
+  public static description = '抓取游戏新闻'
+
+  public static settings = {
+    loadApp: true,
   }
 
-  public async create() {
+  public async handle() {
     await this.fetch()
-
-    return
   }
 
   private async fetch() {
@@ -37,13 +45,15 @@ export default class NewsController {
 
       const
         news = await News.updateOrCreate(data, { title: data.title })
+
       const newsID = news.id
       const pullWordData = await self.pullWord(`${data.title},${data.description}`)
 
       logger.info(`news: ${data.title},${data.description}`)
+
       await self.insertTags(pullWordData, newsID)
 
-      sleep.sleep(1)
+      await sleep.sleep(1)
     })
   }
 
@@ -68,6 +78,7 @@ export default class NewsController {
     data.forEach(async element => {
       const
         title = element.t
+
       const tag = await Tag.updateOrCreate({
         title: title,
       }, { title: title })
