@@ -1,58 +1,87 @@
 import got from 'got'
 import cheerio from 'cheerio'
-import sleep from 'sleep'
 import News from 'App/Models/News'
 import NewsTag from 'App/Models/NewsTag'
-import { URL } from 'url'
 import Tag from 'App/Models/Tag'
 import { logger } from '@adonisjs/ace'
 
 const vgtimeURL = 'https://www.vgtime.com/topic/index/load.jhtml?page=1&pageSize=12'
 
 export default class NewsController {
-  public async index() {
-  }
-
   public async create() {
-    await this.fetch()
+    (await new Fecth().get(vgtimeURL)).dom().vgtime()
+  }
+}
 
-    return
+class Fecth {
+  _body: any
+  _cheerioBody: cheerio.Root
+
+  async get(url: string) {
+    const response = await got(url)
+    const body = JSON.parse(response.body).data
+
+    this._body = body
+    return this
   }
 
-  private async fetch() {
-    const $vgtime = await this.fetchNews(vgtimeURL)
-    await this.vgtime($vgtime)
+  dom() {
+    this._cheerioBody = cheerio.load(this._body)
+    return this
   }
 
-  private async vgtime($dom: any) {
+  vgtime() {
     const self = this
-    $dom('.news').each(async function () {
+
+    this._cheerioBody('.news').each(async function () {
       const
-        data = {
-          title: $dom(this).find('h2').text(),
-          description: $dom(this).find('p').text(),
-          author: $dom(this).find('.user_name').text(),
-          hyperlink: `https://www.vgtime.com${$dom(this).find('a').attr('href')}`,
+        data: any = {
+          title: self._cheerioBody(this).find('h2').text(),
+          description: self._cheerioBody(this).find('p').text(),
+          author: self._cheerioBody(this).find('.user_name').text(),
+          hyperlink: `https://www.vgtime.com${self._cheerioBody(this).find('a').attr('href')}`,
         }
 
-      const
-        news = await News.updateOrCreate(data, { title: data.title })
+      const news = await News.updateOrCreate(data, { title: data.title })
       const newsID = news.id
+
       const pullWordData = await self.pullWord(`${data.title},${data.description}`)
 
       logger.info(`news: ${data.title},${data.description}`)
-      await self.insertTags(pullWordData, newsID)
-
-      sleep.sleep(1)
+      await insertTags(pullWordData, newsID)
     })
-  }
 
-  private async fetchNews(url: string | URL) {
-    const
-      response = await got(url)
-    const body = JSON.parse(response.body).data
 
-    return cheerio.load(body)
+    async function insertTags(data: any[], newsID: number) {
+      for (const iterator of data) {
+        const
+          title = iterator.t
+        const tag = await Tag.updateOrCreate({
+          title: title,
+        }, { title: title })
+
+        const tagID = tag.id
+
+        await insertNewsTags(iterator, newsID, tagID)
+      }
+    }
+
+    async function insertNewsTags(element: { t: string; p: string; }, newsID: number, tagID: number) {
+      const
+        title = element.t
+      const similarity = element.p
+      const data = {
+        news_id: newsID,
+        tag_id: tagID,
+        title: title,
+        similarity: similarity,
+      }
+
+      await NewsTag.updateOrCreate(data, data)
+
+
+      logger.info(`insert newsID: ${newsID}, tagID: ${tagID}, pull_title: ${title}, similarity: ${similarity}`)
+    }
   }
 
   private async pullWord(text: string) {
@@ -62,35 +91,5 @@ export default class NewsController {
     const body = JSON.parse(response.body)
 
     return body
-  }
-
-  private async insertTags(data: any[], newsID: number) {
-    data.forEach(async element => {
-      const
-        title = element.t
-      const tag = await Tag.updateOrCreate({
-        title: title,
-      }, { title: title })
-
-      const tagID = tag.id
-
-      await this.insertNewsTags(element, newsID, tagID)
-    })
-  }
-
-  private async insertNewsTags(element: { t: string; p: string; }, newsID: number, tagID: number) {
-    const
-      title = element.t
-    const similarity = element.p
-    const data = {
-      news_id: newsID,
-      tag_id: tagID,
-      title: title,
-      similarity: similarity,
-    }
-
-    await NewsTag.updateOrCreate(data, data)
-
-    logger.info(`insert newsID: ${newsID}, tagID: ${tagID}, pull_title: ${title}, similarity: ${similarity}`)
   }
 }
