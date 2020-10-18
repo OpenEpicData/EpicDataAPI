@@ -4,8 +4,10 @@ Build with [adonisjs](https://preview.adonisjs.com/)
 
 ## Start development environment
 
-Configure your `.env` file at root directory of project if needed.
+Configure `.env` file first.
+Example file can be found at `.env.example`
 
+`$ mv .env.example .env`
 then run `$ node ace serve --watch`
 
 ## Deploy
