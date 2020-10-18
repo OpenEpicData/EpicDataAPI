@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
-import { EventTime } from '../Interface/Shared'
+import { Identity, EventTime } from '../Interface/Shared'
 
-export class Game implements Identity, EventTime {
+export class QueryResponse implements Identity, EventTime {
   public id: number
   public appid: number
   public name: string
