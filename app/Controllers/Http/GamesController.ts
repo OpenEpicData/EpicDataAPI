@@ -1,10 +1,10 @@
-import {QueryResponse} from 'App/Middleware/Models/Game'
 import Game from 'App/Models/Game'
+import { GameResponse } from 'App/Middleware/Models/Game'
 
 export default class GamesController {
   public async index ({ request }) {
     const requestGet = request.get()
-    const result: QueryResponse[] = []
+    const result: GameResponse[] = []
     await Game.query()
       .orderBy('created_at', 'desc')
       .paginate(requestGet.page, requestGet.limit)
@@ -15,7 +15,7 @@ export default class GamesController {
             appid: f.appid,
             name: f.name,
             createdAt: f.createdAt,
-            updatedAt: f.updatedAt
+            updatedAt: f.updatedAt,
           })
         })
       })
