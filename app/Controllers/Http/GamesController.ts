@@ -1,4 +1,5 @@
 import Game from 'App/Models/Game';
+import {ParseJsonFunction} from 'got/dist/source';
 
 export default class GamesController {
   public async index({ request }) {
