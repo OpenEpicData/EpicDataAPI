@@ -7,5 +7,5 @@ export interface Identity {
 
 export interface EventTime {
   createdAt: DateTime
-  updateAt: DateTime
+  updatedAt: DateTime
 }

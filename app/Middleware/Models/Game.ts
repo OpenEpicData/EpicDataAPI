@@ -6,5 +6,5 @@ export class QueryResponse implements Identity, EventTime {
   public appid: number
   public name: string
   public createdAt: DateTime
-  public updateAt: DateTime
+  public updatedAt: DateTime
 }
