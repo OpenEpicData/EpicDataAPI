@@ -1,37 +1,20 @@
 {
   "env": {
-    "es11": true,
+    "es2021": true,
     "node": true
   },
-  "extends": [
-    "plugin:adonis/typescriptApp"
-  ],
+  "extends": ["plugin:adonis/typescriptApp"],
   "rules": {
-    "brace-style": [
-      "warn",
-      "1tbs"
-    ],
+    "brace-style": ["warn", "1tbs"],
     "camelcase": "warn",
-    "comma-dangle": [
-      "warn",
-      "always-multiline"
-    ],
-    "comma-style": [
-      "error",
-      "last"
-    ],
+    "comma-dangle": ["warn", "always-multiline"],
+    "comma-style": ["error", "last"],
     "complexity": "error",
     "curly": "warn",
-    "eol-last": [
-      "error",
-      "always"
-    ],
+    "eol-last": ["error", "always"],
     "id-length": "error",
     "max-lines": "error",
-    "max-params": [
-      "error",
-      4
-    ],
+    "max-params": ["error", 4],
     "no-duplicate-imports": "error",
     "no-eq-null": "error",
     "no-eval": "error",
@@ -43,16 +26,11 @@
       "warn",
       {
         "location": "anywhere",
-        "terms": [
-          "todo",
-          "fixme"
-        ]
+        "terms": ["todo", "fixme"]
       }
     ],
     "prefer-promise-reject-errors": "error",
-    "semi": [
-      "error",
-      "never"
-    ]
+    "semi": ["error", "never"]
   }
 }
+
