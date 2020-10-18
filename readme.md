@@ -1,6 +1,6 @@
 # EpicData-API
 
-Build with [adonisjs](https://adonisjs.com)
+Build with [adonisjs](https://preview.adonisjs.com/)
 
 ## Start development environment
 
