@@ -1,27 +1,27 @@
 # EpicData-API
 
-Build with adonisjs
+Build with [adonisjs](https://adonisjs.com)
 
-## Dev
+## Start development environment
 
-Set .env
+Configure your `.env` file at root directory of project if needed.
 
-run `node ace serve --watch`
+then run `$ node ace serve --watch`
 
 ## Deploy
 
-sh deploy.sh
+`$ sh ./deploy.sh`
 
 ## Crontab
 
 Add Crontab to your server
 
 ```shell
-cd <your project>
+$ cd <your project>
 ```
 
-### Spider Games
+### Built-in Spider Games
 
 ```shell
-node ace spider:games
+$ node ace spider:games
 ```
