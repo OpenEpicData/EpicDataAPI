@@ -21,4 +21,19 @@ export default class GamesController {
       })
     return result
   }
+
+  public async show ({ params }) {
+    const requestId = params.id
+    const result = new GameResponse()
+    return await Game.find(requestId)
+      .then((data: (GameResponse | null)) => {
+        if (data !== null) {
+          result.id = data.id,
+          result.appid = data.appid,
+          result.name = data.name,
+          result.createdAt = data.createdAt,
+          result.updatedAt = data.updatedAt
+        }
+      })
+  }
 }

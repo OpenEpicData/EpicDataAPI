@@ -3,8 +3,12 @@ import { Identity, EventTime, Paginate } from '../Interface/Shared'
 
 // it shouldn't be exported
 // TODO: after finished paging output need to close it.
-export interface GameResponse extends Identity, EventTime {
-  name: string
+export class GameResponse implements Identity, EventTime {
+  public id: number
+  public appid: number
+  public name: string
+  public createdAt: DateTime
+  public updatedAt: DateTime
 }
 
 export class GameResult {
