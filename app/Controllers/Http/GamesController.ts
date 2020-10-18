@@ -5,7 +5,7 @@ export default class GamesController {
   public async index ({ request }) {
     const requestGet = request.get()
     const result: QueryResponse[] = []
-    const query = await Game.query()
+    await Game.query()
       .orderBy('created_at', 'desc')
       .paginate(requestGet.page, requestGet.limit)
       .then(item => {
