@@ -25,7 +25,7 @@ export default class GamesController {
   public async show ({ params }) {
     const requestId = params.id
     const result = new GameResponse()
-    return await Game.find(requestId)
+    await Game.findBy('id', requestId)
       .then((data: (GameResponse | null)) => {
         if (data !== null) {
           result.id = data.id,
@@ -35,5 +35,6 @@ export default class GamesController {
           result.updatedAt = data.updatedAt
         }
       })
+    return result
   }
 }
