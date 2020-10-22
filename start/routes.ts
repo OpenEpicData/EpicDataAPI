@@ -34,6 +34,12 @@ Route.get('test', async () => {
   return Database.query().select('*').from('users')
 })
 
+Route.get('/', async () => {
+  return {
+    'message': 'Visit our API docs: https://dev.epicdata.net/epicdata-api/http-api'
+  }
+})
+
 Route.resource('spider/news', 'Spider/NewsController')
 Route.resource('news', 'NewsController')
 Route.resource('games', 'GamesController')

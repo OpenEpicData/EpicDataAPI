@@ -6,24 +6,24 @@ Build with [adonisjs](https://preview.adonisjs.com/)
 
 Configure `.env` file first.
 Example file can be found at `.env.example`
-
-`$ mv .env.example .env`
-then run `$ node ace serve --watch`
+ 
+ `$ mv .env.example .env`
+then run `$ yarn start`
 
 ## Deploy
 
-`$ sh ./deploy.sh`
+ `$ sh ./deploy.sh`
 
 ## Crontab
 
 Add Crontab to your server
 
-```shell
+``` shell
 $ cd <your project>
 ```
 
 ### Built-in Spider Games
 
-```shell
+``` shell
 $ node ace spider:games
 ```
