@@ -1,4 +1,4 @@
-import { BaseCommand } from '@adonisjs/ace'
+import { BaseCommand } from '@adonisjs/core/build/standalone'
 import Database from '@ioc:Adonis/Lucid/Database';
 import Game from 'App/Models/Game';
 import got from "got";

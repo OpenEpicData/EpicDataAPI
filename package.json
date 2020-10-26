@@ -8,7 +8,7 @@
     "lint": "eslint . --ext=.ts"
   },
   "devDependencies": {
-    "@adonisjs/assembler": "^2.0.0",
+    "@adonisjs/assembler": "^3.0.6",
     "@types/cheerio": "^0.22.22",
     "@types/lodash": "^4.14.161",
     "adonis-preset-ts": "^1.0.4",
@@ -21,11 +21,9 @@
     "youch-terminal": "^1.0.1"
   },
   "dependencies": {
-    "@adonisjs/ace": "^6.0.0",
-    "@adonisjs/auth": "^4.3.0",
-    "@adonisjs/core": "^5.0.0-preview-rc",
-    "@adonisjs/fold": "^6.0.0",
-    "@adonisjs/lucid": "^8.4.4",
+    "@adonisjs/auth": "^5.0.2",
+    "@adonisjs/core": "^5.0.4-preview-rc-2",
+    "@adonisjs/lucid": "^9.0.3",
     "cheerio": "^1.0.0-rc.3",
     "got": "^11.7.0",
     "luxon": "^1.25.0",
